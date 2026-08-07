@@ -25,12 +25,12 @@ nsis:
   createStartMenuShortcut: true
   runAfterFinish: false
 mac:
+  category: public.app-category.productivity
+  icon: build/icon.png
   entitlementsInherit: build/entitlements.mac.plist
   extendInfo:
-    - NSCameraUsageDescription: Application requests access to the device's camera.
-    - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
-    - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
-    - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
+    - NSDocumentsFolderUsageDescription: Application may access documents when you choose files.
+    - NSDownloadsFolderUsageDescription: Application may access downloads when you choose files.
   notarize: false
 dmg:
   artifactName: ${name}-${version}.${ext}

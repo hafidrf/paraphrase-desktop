@@ -1,84 +1,108 @@
-# Paraphrase Desktop
+# Paraphrase & Translate Desktop
 
-**Paraphrase** is a small Windows desktop app that rewrites text between **Indonesian** and **professional English**. Paste your draft, run a paraphrase, and copy a polished result — clear, warm, and ready for everyday workplace writing.
+Rewrite text between **Indonesian** and **English** in one step: translate **and** standardize style.
 
-It uses **Gemini Flash** (free tier) through [Google AI Studio](https://aistudio.google.com/).
+- **ID → EN:** faithful translation polished to **TOEFL ITP** academic English  
+- **EN → ID:** faithful translation polished to clear formal Indonesian  
 
-- **Two-way rewrite:** Indonesian → English, or English → Indonesian
-- **Professional tone:** natural and colleague-friendly, not stiff or robotic
-- **Technical fidelity:** keeps terms, IDs, URLs, paths, and code identifiers intact
-- **Local keys:** your API key stays on your machine (Settings or `.env`)
+Paraphrase is not a separate mode — it means standardizing your wording into the target language register.
+
+---
+
+## Prerequisites
+
+- **Windows 10/11** or **macOS** (Apple Silicon or Intel)
+- **Node.js 20+** (LTS recommended)
+- Network access for Gemini / DeepSeek / Groq API keys
+
+> **macOS note:** Cross-platform setup currently lives on the `hafid_dev` branch until it has been smoke-tested on a real Mac. Use that branch for the Mac steps below.
 
 ---
 
 ## Setup
 
-### 1. API key
-
-1. Open [Google AI Studio](https://aistudio.google.com/app/api-keys)
-2. Create or copy a **Gemini API key** (Free tier)
-3. Choose one method:
-   - **In the app:** open **Settings** → paste the key → **Save**
-   - **Via file:** copy `.env.example` to `.env` and set:
-     ```
-     MAIN_VITE_GEMINI_API_KEY=your_key_here
-     ```
-
-**Do not** commit `.env`, or share your key in Git, chat, or public channels.
-
-### 2. Run (development)
+### Windows
 
 ```powershell
+git clone -b hafid_dev https://github.com/hafidrf/paraphrase-desktop.git
 cd paraphrase-desktop
 npm install
-npm run dev
-```
-
-### 2b. Desktop shortcut (no terminal)
-
-A **Paraphrase** shortcut can be placed on the Desktop. Double-click it to launch the app.
-
-If the shortcut is missing or you have updated the app:
-
-```powershell
-cd paraphrase-desktop
 npm run setup
 ```
 
-(`setup` builds the app and recreates the Desktop shortcut.)
+That generates the icon, builds an unpacked app under `dist/win-unpacked/`, and creates a Desktop shortcut (`Paraphrase.lnk`).
 
-The unpacked executable lives at: `dist\win-unpacked\Paraphrase.exe`
+Dev mode: `npm run dev`
 
-### 3. Windows installer (optional)
+### macOS
 
-```powershell
-npm run build:win
+1. Install **Node.js 20+** (Homebrew example):
+
+```bash
+brew install node@20
 ```
 
-Installers are written to the `dist/` folder.
+2. Clone `hafid_dev`, install, and run from source:
+
+```bash
+git clone -b hafid_dev https://github.com/hafidrf/paraphrase-desktop.git
+cd paraphrase-desktop
+npm install
+npm run icon
+npm run build
+chmod +x start-app.sh
+npm start
+```
+
+Or use the all-in-one setup (packs with electron-builder for the current OS, then creates a Desktop launcher):
+
+```bash
+npm run setup
+```
+
+3. Optional Desktop shortcut:
+
+```bash
+npm run shortcut
+```
+
+- Creates `Paraphrase.command` on the Desktop  
+- If a packaged `Paraphrase.app` exists under `dist/`, the shortcut opens that app  
+- Otherwise it runs `start-app.sh` (`npm start`)  
+- First open may need right-click → **Open** (Gatekeeper)
+
+4. Packaged `.app` / `.dmg` (must be built **on a Mac**):
+
+```bash
+npm run build:mac
+```
+
+Artifacts land under `dist/`. Unsigned builds are fine for personal use; Gatekeeper may still warn on first open.
 
 ---
 
 ## How to use
 
-1. Paste text into the left panel
-2. Choose the rewrite direction if needed
-3. Click **Paraphrase**, or press **Ctrl+Enter**
-4. Copy the result from the right panel with **Copy**
+1. Choose **ID → EN** or **EN → ID**
+2. Paste source text
+3. Click **Rewrite** (or **Ctrl+Enter** / **Cmd+Enter**)
+4. **Copy** the result
+
+Configure your LLM provider and API key in the app settings.
 
 ---
 
-## Features (v1)
+## Data location
 
-- Dual panels: source input / paraphrased output
-- Paraphrase, Copy, and Clear
-- Keyboard shortcut: **Ctrl+Enter**
-- API key stored locally (Settings or `.env`)
-- System prompt tuned for professional, warm prose while preserving technical detail
+API keys and history stay local (Electron `userData`):
+
+- **Windows:** `%APPDATA%/paraphrase-desktop/` (or the Electron product userData folder)
+- **macOS:** `~/Library/Application Support/paraphrase-desktop/` (or the Electron product userData folder)
+
+Do not commit API keys or `.env` files.
 
 ---
 
 ## Stack
 
-- Electron + React + TypeScript ([electron-vite](https://electron-vite.org/))
-- Gemini API model: `gemini-2.5-flash`
+Electron + React + TypeScript · Gemini / DeepSeek / Groq

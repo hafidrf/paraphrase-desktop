@@ -1,4 +1,5 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { existsSync } from 'fs'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { paraphrase } from './gemini'
@@ -12,6 +13,19 @@ import {
 import type { LlmProvider, ParaphraseDirection } from './types'
 
 let isQuitInProgress = false
+
+function resolveAppIcon(): string | undefined {
+  const buildPng = join(__dirname, '../../build/icon.png')
+  const buildIco = join(__dirname, '../../build/icon.ico')
+  const resourcePng = join(process.resourcesPath, 'icon.png')
+  const resourceIco = join(process.resourcesPath, 'icon.ico')
+  // Prefer PNG on macOS; ICO is the Windows packaging icon.
+  const candidates =
+    process.platform === 'darwin'
+      ? [buildPng, resourcePng, buildIco, resourceIco]
+      : [buildIco, buildPng, resourceIco, resourcePng]
+  return candidates.find((p) => existsSync(p))
+}
 
 function registerIpcHandlers(): void {
   ipcMain.handle('paraphrase', async (_event, text: string, direction: ParaphraseDirection) => {
@@ -49,6 +63,7 @@ function registerIpcHandlers(): void {
 }
 
 function createWindow(): BrowserWindow {
+  const icon = resolveAppIcon()
   const win = new BrowserWindow({
     width: 1100,
     height: 820,
@@ -56,7 +71,8 @@ function createWindow(): BrowserWindow {
     minHeight: 600,
     show: false,
     autoHideMenuBar: true,
-    title: 'Paraphrase',
+    title: 'Paraphrase & Translate',
+    ...(icon ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
