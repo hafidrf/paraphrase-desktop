@@ -1,0 +1,18 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "cache-flush",
+    "hafid_dev",
+    "main"
+  ],
+  "parent": {
+    "cache-flush": "main",
+    "hafid_dev": "main",
+    "main": null
+  },
+  "order": [
+    "main",
+    "cache-flush",
+    "hafid_dev"
+  ]
+}
