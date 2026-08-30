@@ -6,8 +6,6 @@ out/
 dist/
 
 # Environment (API keys — never commit)
-.env
-.env.local
 .env.*.local
 
 # Logs
@@ -18,7 +16,6 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 .idea/
-.vscode/*
 !.vscode/extensions.json
 
 # Electron builder
@@ -27,3 +24,7 @@ Thumbs.db
 
 # ESLint cache
 .eslintcache
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+config.bat
