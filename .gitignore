@@ -18,8 +18,6 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 .idea/
-.vscode/*
-!.vscode/extensions.json
 
 # Electron builder
 *.exe
