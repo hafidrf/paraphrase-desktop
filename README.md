@@ -2,10 +2,10 @@
 
 Rewrite text between **Indonesian** and **English** in one step: translate **and** standardize style.
 
-- **ID → EN:** faithful translation polished to **TOEFL ITP** academic English  
-- **EN → ID:** faithful translation polished to clear formal Indonesian  
+- **ID → EN:** faithful translation polished to **TOEFL ITP–quality** English that stays natural for developers at work (clear, not stiff)  
+- **EN → ID:** faithful translation polished to clear professional Indonesian  
 
-Paraphrase is not a separate mode — it means standardizing your wording into the target language register.
+Paraphrase is not a separate mode; it means standardizing your wording into the target language register.
 
 ---
 
@@ -13,7 +13,8 @@ Paraphrase is not a separate mode — it means standardizing your wording into t
 
 - **Windows 10/11** or **macOS** (Apple Silicon or Intel)
 - **Node.js 20+** (LTS recommended)
-- Network access for Gemini / DeepSeek / Groq API keys
+- Network access for Gemini / DeepSeek / Groq API keys, **or** a running local [9Router](https://9router.com) (`http://localhost:20128`) with its dashboard API key
+
 
 > **macOS note:** Cross-platform setup currently lives on the `hafid_dev` branch until it has been smoke-tested on a real Mac. Use that branch for the Mac steps below.
 
@@ -33,6 +34,21 @@ npm run setup
 That generates the icon, builds an unpacked app under `dist/win-unpacked/`, and creates a Desktop shortcut (`Paraphrase.lnk`).
 
 Dev mode: `npm run dev`
+
+### Phone (iPhone / Infinix)
+
+Same Wi-Fi as this PC, then:
+
+```powershell
+npm run web
+```
+
+Open the printed URL on the phone, e.g. `http://192.168.x.x:8787`.
+
+- **iPhone:** Safari → Share → **Add to Home Screen**
+- **Infinix:** Chrome → menu ⋮ → **Add to Home screen**
+
+Leave the terminal open while you use it. API keys can live in `.env` on the PC, or be pasted once in Settings on the phone.
 
 ### macOS
 
@@ -105,4 +121,5 @@ Do not commit API keys or `.env` files.
 
 ## Stack
 
-Electron + React + TypeScript · Gemini / DeepSeek / Groq
+Electron + React + TypeScript · Gemini / DeepSeek / Groq / 9Router
+
